@@ -1,0 +1,75 @@
+/* Global Styles*/
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:900');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-image: url(../images/background.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.container {
+    margin-top: 20px;
+    width: 80%;
+    padding: 20px 20px 20px 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    box-shadow: 4px 4px 4px 4px black;
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+/* IDs */
+
+#characterRow {
+    height: 200px;
+}
+
+#opponentsRow {
+    height: 200px;
+}
+
+#characterArea {
+    text-align: enter;
+}
+
+/* Classes */
+
+.hermioneGranger {
+    height: auto;
+    padding: none;
+}
+
+.tomRiddle {
+    height: auto;
+    padding: none;
+}
+
+.dracoMalfoy {
+    height: auto;
+    padding: none;
+}
+
+.harryPotter {
+    height: auto;
+    padding: none;
+}
+
+.charImage {
+    width: 100%;
+}
+
+.btn {
+    color: black;
+    width: 100%;
+    height: 155px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+/* Media Queries */
