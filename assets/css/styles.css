@@ -44,13 +44,10 @@ h3 {
 /* IDs */
 
 #footer {
+    width: 100%;
     position: fixed;
     bottom: 0;
     padding-bottom: 10px;
-}
-
-#footer p {
-    text-align:center;
 }
 
 #headerImage img {
