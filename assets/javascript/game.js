@@ -430,7 +430,7 @@ $(document).ready(function() {
             theme.play();
         });
 
-        $("#characterRow").show();
+        $("#characterRow").show(1000);
         $("#opponentsRow").show();
         $("#allOppsRow").show();
         $("#ruleRow").show();
