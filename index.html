@@ -16,15 +16,22 @@
 
         <div class="row">
 
-            <div class="col-sm-12">
-                <h1>Hogwarts Duel</h1>
-                <p id="instructions">Click to choose a character. Then choose your first opponent. Try to defeat all 3 opponents. If your HP reaches 0, you die. You do not recover after single fights. Click attack to begin the duel. <u>Click on the instructions to start the game.</u></p>
-                <hr>
+            <div id="titleDiv" class="col-sm-12">
+                <div id="headerImage"><img src="./assets/images/header-img-3.png"></div>
+                <div id="instructions">
+                    <h3>GAME INSTRUCTIONS:</h3>
+                    <p>Choose a character.</p>
+                    <p>Choose your first opponent.</p>
+                    <p>Once an opponent is defeated, click another to start the next round.</p>
+                    <p>Try to defeat all 3 opponents without running out of HP.</p>
+                    <p>You DO NOT recover.</p>
+                    <p>Click on this instructions box to start the game.</p>
+                </div>
             </div>
 
         </div>
 
-        <div class="row">
+        <div id="yourCharacterRow"class="row">
 
             <div class="col-sm-12">
                 <h2>Your Character</h2>
@@ -36,12 +43,12 @@
             <div id="characterArea"></div>
 
             <div class="col-sm-4">
-                <button id="attackBtn" class="btn btn-success"><h1>Attack</h1></button>
+                <button id="attackBtn" class="btn btn-danger"><h3>Attack</h3></button>
             </div>
 
         </div>
 
-        <div class="row">
+        <div id="ruleRow" class="row">
 
             <div class="col-sm-12">
                 <hr>
@@ -49,7 +56,7 @@
             
         </div>
 
-        <div class="row">
+        <div id="allOppsRow" class="row">
 
             <div class="col-sm-6">
                 <h2>Active Opponent</h2>
@@ -81,6 +88,8 @@
             </div>
 
         </div>
+
+        <footer id="footer"><p>jQuery Game Created by Bryan Lee in August 2018.</p></footer>
 
     </div>
 

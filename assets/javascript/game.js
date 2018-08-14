@@ -3,6 +3,12 @@
 
 $(document).ready(function() {
 
+    $("#characterRow").hide();
+    $("#opponentsRow").hide();
+    $("#allOppsRow").hide();
+    $("#ruleRow").hide();
+    $("#yourCharacterRow").hide();
+
     //  Create objects for game characters
 
     var chosenCharacter = "";
@@ -414,90 +420,99 @@ $(document).ready(function() {
     var instructions = $("#instructions");
     
     $(instructions).on("click", function () {
-        $("p").slideToggle(1000);   
+        $(instructions).hide(400);   
         theme.play();
+        runGame();
+    });
+
+    function runGame() {
+
+        $("#characterRow").show();
+        $("#opponentsRow").show();
+        $("#allOppsRow").show();
+        $("#ruleRow").show();
+        $("#yourCharacterRow").show();
+
         loadCharacters();
         chooseCharacter();
-    });
 
-    //  fight begins
+        //  fight begins
 
-    function beginFight() {
+        function beginFight() {
 
-        // opponent loses health power equal to the player's damage
-        chosenOpponent.healthPower = chosenOpponent.healthPower - chosenCharacter.attackPower;
-       
-        // add 6 to player's attach power
-        chosenCharacter.attackPower = chosenCharacter.attackPower + 6;
-
-        //refresh opponent stats
-        $("#waitingOppArea .oppStats").empty();
-        $("#waitingOppArea .oppStats").append(chosenOpponent.name + "<br>");
-        $("#waitingOppArea .oppStats").append("HP " + chosenOpponent.healthPower);
+            // opponent loses health power equal to the player's damage
+            chosenOpponent.healthPower = chosenOpponent.healthPower - chosenCharacter.attackPower;
         
-        chosenCharacter.healthPower = chosenCharacter.healthPower - chosenOpponent.counterAttack;
+            // add 6 to player's attach power
+            chosenCharacter.attackPower = chosenCharacter.attackPower + 6;
 
-        //refresh player stats
-        $("#characterArea .playerStats").empty();
-        $("#characterArea .playerStats").append(chosenCharacter.name + "<br>");
-        $("#characterArea .playerStats").append("HP " + chosenCharacter.healthPower);
-        
-        if (chosenCharacter.healthPower <= 0) {
-            alert("You died. Game over.");
-            gameOverSound.play();
-            //add in game over screen with button to restart
-            $(".container").empty();
-            $(".container").removeClass("containerBackground");
-            var endScreen = $("<div class='col-sm-12'>");
-            var loseImage = $("<img style='width:100%'>")
-            var restartInstructions = $("<h2 style='text-align:center'>");
-            loseImage.attr("src", "./assets/images/youlose3.png");
-            loseImage.addClass("endImage");
-            $(".container").append(endScreen);
-            endScreen.append(loseImage);
-            endScreen.before(restartInstructions);
-            restartInstructions.html("Click center of screen to restart.")
-        }
-        
-        if (chosenOpponent.healthPower <= 0) {
-            alert("You have defeated " + chosenOpponent.name);
-            $("#activeOppArea").empty();
-            $(".oppStats").remove();
-            defeatedOpps++;
+            //refresh opponent stats
+            $("#waitingOppArea .oppStats").empty();
+            $("#waitingOppArea .oppStats").append(chosenOpponent.name + "<br>");
+            $("#waitingOppArea .oppStats").append("HP " + chosenOpponent.healthPower);
+            
+            chosenCharacter.healthPower = chosenCharacter.healthPower - chosenOpponent.counterAttack;
+
+            //refresh player stats
+            $("#characterArea .playerStats").empty();
+            $("#characterArea .playerStats").append(chosenCharacter.name + "<br>");
+            $("#characterArea .playerStats").append("HP " + chosenCharacter.healthPower);
+            
+            if (chosenCharacter.healthPower <= 0) {
+                alert("You died. Game over.");
+                gameOverSound.play();
+                //add in game over screen with button to restart
+                $(".container").empty();
+                $(".container").removeClass("containerBackground");
+                var endScreen = $("<div class='col-sm-12'>");
+                var loseImage = $("<img style='width:100%'>")
+                var restartInstructions = $("<h2 style='text-align:center'>");
+                loseImage.attr("src", "./assets/images/youlose4.png");
+                loseImage.addClass("endImage");
+                $(".container").append(endScreen);
+                endScreen.append(loseImage);
+                endScreen.before(restartInstructions);
+                restartInstructions.html("Click center of screen to restart.")
+            }
+            
+            if (chosenOpponent.healthPower <= 0) {
+                alert("You have defeated " + chosenOpponent.name);
+                $("#activeOppArea").empty();
+                $(".oppStats").remove();
+                defeatedOpps++;
+            }
+
+            if (defeatedOpps === 3) {
+                $(".container").empty();
+                $(".container").removeClass("containerBackground");
+                var endScreen = $("<div class='col-sm-12'>");
+                var winImage = $("<img style='width:100%'>")
+                var restartInstructions = $("<h2 style='text-align:center'>");
+                winImage.attr("src", "./assets/images/youwin4.png");
+                winImage.addClass("endImage");
+                $(".container").append(endScreen);
+                endScreen.append(winImage);
+                endScreen.before(restartInstructions);
+                restartInstructions.html("Click center of screen to restart.")
+            }
+
+            $(".endImage").on("click", function () {
+                location.reload();
+            });
         }
 
-        if (defeatedOpps === 3) {
-            $(".container").empty();
-            $(".container").removeClass("containerBackground");
-            var endScreen = $("<div class='col-sm-12'>");
-            var winImage = $("<img style='width:100%'>")
-            var restartInstructions = $("<h2 style='text-align:center'>");
-            winImage.attr("src", "./assets/images/youwin3.png");
-            winImage.addClass("endImage");
-            $(".container").append(endScreen);
-            endScreen.append(winImage);
-            endScreen.before(restartInstructions);
-            restartInstructions.html("Click center of screen to restart.")
-        }
+        $("#attackBtn").on("click", function () {
+            attack.play();
+            
+            if (fightingCharacters < 2) {
+                alert("You must choose characters before you can attack.");
+            
+            } else {
+                beginFight();
+            }
 
-        $(".endImage").on("click", function () {
-            location.reload();
         });
     }
-
-    $("#attackBtn").on("click", function () {
-
-        attack.play();
-
-        if (fightingCharacters < 2) {
-            alert("You haven't finished set-up. Choose your initial character and opponent before clicking the Attack button.")
-        
-        } else {
-            beginFight();
-        }
-
-    });
-
 
     //  when player clicks on attack button, they damage the opponent for the amount specified as "objectname.attackPower"
     //  player's attack increases by 6 with each regular attack (not on counter attack)
