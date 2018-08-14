@@ -3,11 +3,16 @@
 
 $(document).ready(function() {
 
-    $("#characterRow").hide();
-    $("#opponentsRow").hide();
-    $("#allOppsRow").hide();
-    $("#ruleRow").hide();
-    $("#yourCharacterRow").hide();
+    $("#instructionsPopUp").hide(0); 
+    $("#characterRow").hide(0);
+    $("#opponentsRow").hide(0);
+    $("#allOppsRow").hide(0);
+    $("#ruleRow").hide(0);
+    $("#yourCharacterRow").hide(0);
+    $("#instructionsHide").hide(0);
+    $("#footer").hide(0);
+    $("#attackBtn").hide(0);
+
 
     //  Create objects for game characters
 
@@ -33,8 +38,8 @@ $(document).ready(function() {
         name: "Harry Potter",
         variable: "harry",
         healthPower: 150,
-        attackPower: 6,
-        counterAttack: 20,
+        attackPower: 7,
+        counterAttack: 10,
     };
 
     var harrySound = new Audio('./assets/sounds/harry.mp3');
@@ -101,7 +106,7 @@ $(document).ready(function() {
         name: "Hermione Granger",
         variable: "hermione",
         healthPower: 100,
-        attackPower: 6,
+        attackPower: 10,
         counterAttack: 15,
     };
 
@@ -169,7 +174,7 @@ $(document).ready(function() {
         variable: "voldemort",
         healthPower: 180,
         attackPower: 6,
-        counterAttack: 25,
+        counterAttack: 20,
     };
 
     var voldemortSound = new Audio('./assets/sounds/voldemort.mp3');
@@ -236,7 +241,7 @@ $(document).ready(function() {
         name: "Draco Malfoy",
         variable: "draco",
         healthPower: 120,
-        attackPower: 6,
+        attackPower: 8,
         counterAttack: 5,
     };
 
@@ -419,22 +424,31 @@ $(document).ready(function() {
     var instructions = $("#instructions");
     
     $(instructions).on("click", function () {
-        $(instructions).hide(400);   
+        $(instructions).hide(500); 
+        $("#instructionsPopUp").show(2000); 
         runGame();
     });
 
     function runGame() {
 
+        $("#instructionsPopUp").on("click", function () {
+            $("#yourCharacterRow").slideToggle(1000); 
+            $("#characterRow").slideToggle(1000); 
+            $(instructions).slideToggle(1000);
+            $("#footer").slideToggle(1000); 
+        });
 
         $("#playTheme").on("click", function () {
             theme.play();
         });
 
-        $("#characterRow").show(1000);
+        $("#characterRow").show(1200);
+        $("#attackBtn").show();
         $("#opponentsRow").show();
         $("#allOppsRow").show();
         $("#ruleRow").show();
         $("#yourCharacterRow").show();
+        $("#footer").show(500);
 
         loadCharacters();
         chooseCharacter();
