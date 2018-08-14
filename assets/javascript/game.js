@@ -20,13 +20,12 @@ $(document).ready(function() {
 
     var theme = new Audio('./assets/sounds/theme.mp3');
     var attack = new Audio('./assets/sounds/attack.mp3');
+    var winSound = new Audio('./assets/sounds/youWin.mp3');
     var gameOverSound = new Audio('./assets/sounds/hermione.mp3');
 
     function playAudio() { 
         x.play(); 
     } 
-
-    theme.play();
 
     //  HARRY POTTER - Character object and game functions
 
@@ -421,11 +420,15 @@ $(document).ready(function() {
     
     $(instructions).on("click", function () {
         $(instructions).hide(400);   
-        theme.play();
         runGame();
     });
 
     function runGame() {
+
+
+        $("#playTheme").on("click", function () {
+            theme.play();
+        });
 
         $("#characterRow").show();
         $("#opponentsRow").show();
@@ -459,7 +462,6 @@ $(document).ready(function() {
             $("#characterArea .playerStats").append("HP " + chosenCharacter.healthPower);
             
             if (chosenCharacter.healthPower <= 0) {
-                alert("You died. Game over.");
                 gameOverSound.play();
                 //add in game over screen with button to restart
                 $(".container").empty();
@@ -476,13 +478,13 @@ $(document).ready(function() {
             }
             
             if (chosenOpponent.healthPower <= 0) {
-                alert("You have defeated " + chosenOpponent.name);
                 $("#activeOppArea").empty();
                 $(".oppStats").remove();
                 defeatedOpps++;
             }
 
             if (defeatedOpps === 3) {
+                winSound.play();
                 $(".container").empty();
                 $(".container").removeClass("containerBackground");
                 var endScreen = $("<div class='col-sm-12'>");
