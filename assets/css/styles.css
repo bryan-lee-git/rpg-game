@@ -14,8 +14,11 @@ body {
     margin-top: 20px;
     width: 80%;
     padding: 20px 20px 20px 20px;
-    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 10px;
+}
+
+.containerBackground {
+    background-color: rgba(0, 0, 0, 0.4);
     box-shadow: 4px 4px 4px 4px black;
 }
 
@@ -25,6 +28,10 @@ h2 {
 }
 
 /* IDs */
+
+#instructions {
+    font-size: 20px;
+}
 
 #characterRow {
     height: 200px;
@@ -36,6 +43,14 @@ h2 {
 
 #characterArea {
     text-align: enter;
+}
+
+#waitingOppArea .playerStats {
+    margin-top: 100px;
+}
+
+#characterArea .playerStats {
+    margin-top: 80px;
 }
 
 /* Classes */
@@ -62,14 +77,17 @@ h2 {
 
 .charImage {
     width: 100%;
+    border-radius: 10px;
 }
 
 .btn {
     color: black;
-    width: 100%;
-    height: 155px;
+    width: 75%;
     margin-top: 50px;
-    margin-bottom: 50px;
+}
+
+.endImage {
+    margin-top:-300px;
 }
 
 /* Media Queries */
