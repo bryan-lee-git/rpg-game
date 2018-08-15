@@ -13,24 +13,22 @@ $(document).ready(function() {
     $("#footer").hide(0);
     $("#attackBtn").hide(0);
 
-
     //  Create objects for game characters
 
     var chosenCharacter = "";
     var chosenOpponent = "";
     var waitingOpps = [];
     var fightingCharacters = 0;
-    var opponentStats = [];
     var defeatedOpps = 0;
 
     var theme = new Audio('./assets/sounds/theme.mp3');
     var attack = new Audio('./assets/sounds/attack.mp3');
     var winSound = new Audio('./assets/sounds/youWin.mp3');
     var gameOverSound = new Audio('./assets/sounds/hermione.mp3');
-
-    function playAudio() { 
-        x.play(); 
-    } 
+    var harrySound = new Audio('./assets/sounds/harry.mp3');
+    var hermioneSound = new Audio('./assets/sounds/hermione2.mp3');
+    var dracoSound = new Audio('./assets/sounds/draco.mp3');
+    var voldemortSound = new Audio('./assets/sounds/voldemort.mp3');
 
     //  HARRY POTTER - Character object and game functions
 
@@ -40,63 +38,67 @@ $(document).ready(function() {
         healthPower: 150,
         attackPower: 7,
         counterAttack: 10,
-    };
+        image: "./assets/images/hp.png",
+        beHarry: function () {
 
-    var harrySound = new Audio('./assets/sounds/harry.mp3');
+            var harryPotter = $("<div>");
+            var harryImage = $("<img>");
+            harryImage.addClass("harryImage charImage");
+            harryImage.attr("src", this.image);
 
-    function beHarry () {
+            if (chosenCharacter === this) {
+                
+                $("#characterArea").empty();
+                $("#characterArea").append(harryPotter);
+                harryPotter.addClass("harryPotter col-sm-3");
+                $(".harryPotter").append(harryImage);
+                var harryPlay = $("<h2>");
+                harryPlay.addClass("playerStats col-sm-2");
+                harryPlay.append(this.name + "<br>");
+                harryPlay.append("HP " + this.healthPower);
+                $("#characterArea").append(harryPlay);
+            
+            } else if (chosenCharacter === "") {
 
-        var harryPotter = $("<div>");
-        var harryImage = $("<img>");
-        harryImage.addClass("harryImage charImage");
-        harryImage.attr("src", "./assets/images/hp.png");
-        var harryStats = $("<p>");
-        harryStats.addClass("harryStats");
+                $(".harryPotter").empty();
+                $("#characterArea").append(harryPotter);
+                harryPotter.addClass("harryPotter col-sm-2");
+                $(".harryPotter").append(harryImage);
+                var harryStats = $("<p>");
+                $(".harryPotter").prepend(harryStats);
+                harryStats.addClass("harryStats");
+                $(".harryPotter").prepend(harryStats);
+                $(".harryStats").before(this.name);
+                $(".harryStats").append("HP " + this.healthPower);
 
-        if (chosenCharacter === harry || chosenCharacter === "harry") {
-            $("#characterArea").empty();
-            $("#characterArea").append(harryPotter);
-            harryPotter.addClass("harryPotter col-sm-3");
-            $(".harryPotter").append(harryImage);
-            var harryPlay = $("<h2>");
-            $("#characterArea").append(harryPlay);
-            harryPlay.addClass("playerStats col-sm-2");
-            harryPlay.append(harry.name + "<br>");
-            harryPlay.append("HP " + harry.healthPower);
+            } else if (chosenOpponent === this) {
 
-        } else if (chosenCharacter === "") {
-            var harryStats = $("<p>");
-            harryStats.addClass("harryStats");
-            $("#characterArea").append(harryPotter);
-            harryPotter.addClass("harryPotter col-sm-2");
-            $(".harryPotter").append(harryImage);
-            $(".harryPotter").prepend(harryStats);
-            $(".harryStats").before(harry.name);
-            $(".harryStats").append("HP " + harry.healthPower);
+                $(".oppStats").empty();
+                $("#activeOppArea").empty();
+                $(".harryPotter").empty();
+                $("#activeOppArea").append(harryPotter);
+                harryPotter.addClass("harryPotter");
+                $(".harryPotter").append(harryImage);
+                var harryPlay = $("<h2>");
+                harryPlay.addClass("oppStats col-sm-4");
+                harryPlay.append(this.name + "<br>");
+                harryPlay.append("HP " + this.healthPower);
+                $("#waitingOppArea").prepend(harryPlay);
 
-        } else if (chosenOpponent === harry) {
-            $("#waitingOppArea .playerStats").empty();
-            $("#activeOppArea").empty();
-            $(".harryPotter").empty();
-            $("#activeOppArea").append(harryPotter);
-            harryPotter.addClass("harryPotter");
-            $(".harryPotter").append(harryImage);
-            var harryPlay = $("<h2>");
-            $("#waitingOppArea").prepend(harryPlay);
-            harryPlay.addClass("oppStats col-sm-4");
-            harryPlay.append(harry.name + "<br>");
-            harryPlay.append("HP " + harry.healthPower);
+            } else if (chosenOpponent !== this && chosenOpponent === "") {
 
-        } else if (chosenOpponent !== harry && chosenOpponent === "") {
-            $("#waitingOppArea").append(harryPotter);
-            harryPotter.addClass("harryPotter col-sm-4");
-            $(".harryPotter").append(harryImage);
-            $(".harryPotter").prepend(harryStats);
-            $(".harryStats").before(harry.name);
-            $(".harryStats").append("HP " + harry.healthPower);
-        
-        } else {
-            waitingOpps.push(harry.variable);
+                $("#waitingOppArea").append(harryPotter);
+                harryPotter.addClass("harryPotter col-sm-4");
+                $(".harryPotter").append(harryImage);
+                var harryStats = $("<p>");
+                harryStats.addClass("harryStats");
+                $(".harryPotter").prepend(harryStats);
+                $(".harryStats").before(this.name);
+                $(".harryStats").append("HP " + this.healthPower);
+
+            } else {
+                waitingOpps.push(this.variable);
+            }
         }
     }
 
@@ -108,63 +110,68 @@ $(document).ready(function() {
         healthPower: 100,
         attackPower: 10,
         counterAttack: 15,
-    };
+        image: "./assets/images/hermione.png",
+        beHermione: function () {
 
-    var hermioneSound = new Audio('./assets/sounds/hermione2.mp3');
+            var hermioneGranger = $("<div>");
+            var hermioneImage = $("<img>");
+            hermioneImage.addClass("hermioneImage charImage");
+            hermioneImage.attr("src", this.image);
 
-    function beHermione () {
+            if (chosenCharacter === this) {
+                
+                $("#characterArea").empty();
+                $("#characterArea").append(hermioneGranger);
+                hermioneGranger.addClass("hermioneGranger col-sm-3");
+                $(".hermioneGranger").append(hermioneImage);
+                var hermionePlay = $("<h2>");
+                hermionePlay.addClass("playerStats col-sm-2");
+                hermionePlay.append(this.name + "<br>");
+                hermionePlay.append("HP " + this.healthPower);
+                $("#characterArea").append(hermionePlay);
+            
+            } else if (chosenCharacter === "") {
 
-        var hermioneGranger = $("<div>");
-        var hermioneImage = $("<img>");
-        hermioneImage.addClass("hermioneImage charImage");
-        hermioneImage.attr("src", "./assets/images/hermione.png");
-        var hermioneStats = $("<p>");
-        hermioneStats.addClass("hermioneStats");
+                $(".hermioneGranger").empty();
+                $("#characterArea").append(hermioneGranger);
+                hermioneGranger.addClass("hermioneGranger col-sm-2");
+                $(".hermioneGranger").append(hermioneImage);
+                var hermioneStats = $("<p>");
+                $(".hermioneGranger").prepend(hermioneStats);
+                hermioneStats.addClass("hermioneStats");
+                $(".hermioneGranger").prepend(hermioneStats);
+                $(".hermioneStats").before(this.name);
+                $(".hermioneStats").append("HP " + this.healthPower);
 
-        if (chosenCharacter === hermione || chosenCharacter === "hermione"){
-            $("#characterArea").empty();
-            $("#characterArea").append(hermioneGranger);
-            hermioneGranger.addClass("hermioneGranger col-sm-3");
-            $(".hermioneGranger").append(hermioneImage);
-            var hermionePlay = $("<h2>");
-            $("#characterArea").append(hermionePlay);
-            hermionePlay.addClass("playerStats col-sm-2");
-            hermionePlay.append(hermione.name + "<br>");
-            hermionePlay.append("HP " + hermione.healthPower);
-        
-        } else if (chosenCharacter === "") {
-            $("#characterArea").append(hermioneGranger);
-            hermioneGranger.addClass("hermioneGranger col-sm-2");
-            $(".hermioneGranger").append(hermioneImage);
-            $(".hermioneGranger").prepend(hermioneStats);
-            $(".hermioneStats").before(hermione.name);
-            $(".hermioneStats").append("HP " + hermione.healthPower);
+            } else if (chosenOpponent === this) {
 
-        } else if (chosenOpponent === hermione) {
-            $("#waitingOppArea .playerStats").empty();
-            $("#activeOppArea").empty();
-            $(".hermioneGranger").empty();
-            $("#activeOppArea").append(hermioneGranger);
-            hermioneGranger.addClass("hermioneGranger");
-            $(".hermioneGranger").append(hermioneImage);
-            var hermionePlay = $("<h2>");
-            $("#waitingOppArea").prepend(hermionePlay);
-            hermionePlay.addClass("oppStats col-sm-4");
-            hermionePlay.append(hermione.name + "<br>");
-            hermionePlay.append("HP " + hermione.healthPower);
+                $(".oppStats").empty();
+                $("#activeOppArea").empty();
+                $(".hermioneGranger").empty();
+                $("#activeOppArea").append(hermioneGranger);
+                hermioneGranger.addClass("hermioneGranger");
+                $(".hermioneGranger").append(hermioneImage);
+                var hermionePlay = $("<h2>");
+                hermionePlay.addClass("oppStats col-sm-4");
+                hermionePlay.append(this.name + "<br>");
+                hermionePlay.append("HP " + this.healthPower);
+                $("#waitingOppArea").prepend(hermionePlay);
 
-        } else if (chosenOpponent !== hermione && chosenOpponent === "") {
-            $("#waitingOppArea").append(hermioneGranger);
-            hermioneGranger.addClass("hermioneGranger col-sm-4");
-            $(".hermioneGranger").append(hermioneImage);
-            $(".hermioneGranger").prepend(hermioneStats);
-            $(".hermioneStats").before(hermione.name);
-            $(".hermioneStats").append("HP " + hermione.healthPower);
-        
-        } else {
-            waitingOpps.push(hermione.variable);
+            } else if (chosenOpponent !== this && chosenOpponent === "") {
+
+                $("#waitingOppArea").append(hermioneGranger);
+                hermioneGranger.addClass("hermioneGranger col-sm-4");
+                $(".hermioneGranger").append(hermioneImage);
+                var hermioneStats = $("<p>");
+                hermioneStats.addClass("hermioneStats");
+                $(".hermioneGranger").prepend(hermioneStats);
+                $(".hermioneStats").before(this.name);
+                $(".hermioneStats").append("HP " + this.healthPower);
+
+            } else {
+                waitingOpps.push(this.variable);
+            }
         }
-
     }
 
     // VOLDEMORT - Character object and game functions
@@ -175,64 +182,68 @@ $(document).ready(function() {
         healthPower: 180,
         attackPower: 6,
         counterAttack: 20,
-    };
+        image: "./assets/images/volde.png",
+        beVoldemort: function () {
 
-    var voldemortSound = new Audio('./assets/sounds/voldemort.mp3');
+            var tomRiddle = $("<div>");
+            var voldemortImage = $("<img>");
+            voldemortImage.addClass("voldemortImage charImage");
+            voldemortImage.attr("src", this.image);
 
-    function beVoldemort () {
+            if (chosenCharacter === this) {
+                
+                $("#characterArea").empty();
+                $("#characterArea").append(tomRiddle);
+                tomRiddle.addClass("tomRiddle col-sm-3");
+                $(".tomRiddle").append(voldemortImage);
+                var voldemortPlay = $("<h2>");
+                voldemortPlay.addClass("playerStats col-sm-2");
+                voldemortPlay.append(this.name + "<br>");
+                voldemortPlay.append("HP " + this.healthPower);
+                $("#characterArea").append(voldemortPlay);
+            
+            } else if (chosenCharacter === "") {
 
-        var tomRiddle = $("<div>");
-        var voldemortImage = $("<img>");
-        voldemortImage.addClass("voldemortImage charImage");
-        voldemortImage.attr("src", "./assets/images/volde.png");
-        var voldemortStats = $("<p>");
-        voldemortStats.addClass("voldemortStats");
+                $(".tomRiddle").empty();
+                $("#characterArea").append(tomRiddle);
+                tomRiddle.addClass("tomRiddle col-sm-2");
+                $(".tomRiddle").append(voldemortImage);
+                var voldemortStats = $("<p>");
+                $(".tomRiddle").prepend(voldemortStats);
+                voldemortStats.addClass("voldemortStats");
+                $(".tomRiddle").prepend(voldemortStats);
+                $(".voldemortStats").before(this.name);
+                $(".voldemortStats").append("HP " + this.healthPower);
 
-        if (chosenCharacter === voldemort || chosenCharacter === "voldemort") {
-            $("#characterArea").empty();
-            $("#characterArea").append(tomRiddle);
-            tomRiddle.addClass("tomRiddle col-sm-3");
-            $(".tomRiddle").append(voldemortImage);
-            var voldemortPlay = $("<h2>");
-            $("#characterArea").append(voldemortPlay);
-            voldemortPlay.addClass("playerStats col-sm-2");
-            voldemortPlay.append(voldemort.name + "<br>");
-            voldemortPlay.append("HP " + voldemort.healthPower);
-        
-        } else if (chosenCharacter === "") {
-            $(".tomRiddle").empty();
-            $("#characterArea").append(tomRiddle);
-            tomRiddle.addClass("tomRiddle col-sm-2");
-            $(".tomRiddle").append(voldemortImage);
-            $(".tomRiddle").prepend(voldemortStats);
-            $(".voldemortStats").before(voldemort.name);
-            $(".voldemortStats").append("HP " + voldemort.healthPower);
+            } else if (chosenOpponent === this) {
 
-        } else if (chosenOpponent === voldemort) {
-            $("#waitingOppArea .playerStats").empty();
-            $("#activeOppArea").empty();
-            $(".tomRiddle").empty();
-            $("#activeOppArea").append(tomRiddle);
-            tomRiddle.addClass("tomRiddle");
-            $(".tomRiddle").append(voldemortImage);
-            var voldemortPlay = $("<h2>");
-            $("#waitingOppArea").prepend(voldemortPlay);
-            voldemortPlay.addClass("oppStats col-sm-4");
-            voldemortPlay.append(voldemort.name + "<br>");
-            voldemortPlay.append("HP " + voldemort.healthPower);
+                $(".oppStats").empty();
+                $("#activeOppArea").empty();
+                $(".tomRiddle").empty();
+                $("#activeOppArea").append(tomRiddle);
+                tomRiddle.addClass("tomRiddle");
+                $(".tomRiddle").append(voldemortImage);
+                var voldemortPlay = $("<h2>");
+                voldemortPlay.addClass("oppStats col-sm-4");
+                voldemortPlay.append(this.name + "<br>");
+                voldemortPlay.append("HP " + this.healthPower);
+                $("#waitingOppArea").prepend(voldemortPlay);
 
-        } else if (chosenOpponent !== voldemort && chosenOpponent === "") {
-            $("#waitingOppArea").append(tomRiddle);
-            tomRiddle.addClass("tomRiddle col-sm-4");
-            $(".tomRiddle").append(voldemortImage);
-            $(".tomRiddle").prepend(voldemortStats);
-            $(".voldemortStats").before(voldemort.name);
-            $(".voldemortStats").append("HP " + voldemort.healthPower);
+            } else if (chosenOpponent !== this && chosenOpponent === "") {
 
-        } else {
-            waitingOpps.push(voldemort.variable);
+                $("#waitingOppArea").append(tomRiddle);
+                tomRiddle.addClass("tomRiddle col-sm-4");
+                $(".tomRiddle").append(voldemortImage);
+                var voldemortStats = $("<p>");
+                voldemortStats.addClass("voldemortStats");
+                $(".tomRiddle").prepend(voldemortStats);
+                $(".voldemortStats").before(this.name);
+                $(".voldemortStats").append("HP " + this.healthPower);
+
+            } else {
+                waitingOpps.push(this.variable);
+            }
         }
-
     }
 
     // DRACO MALFOY - Character object and game functions
@@ -243,64 +254,68 @@ $(document).ready(function() {
         healthPower: 120,
         attackPower: 8,
         counterAttack: 5,
-    };
+        image: "./assets/images/draco.png",
+        beDraco: function () {
 
-    var dracoSound = new Audio('./assets/sounds/draco.mp3');
+            var dracoMalfoy = $("<div>");
+            var dracoImage = $("<img>");
+            dracoImage.addClass("dracoImage charImage");
+            dracoImage.attr("src", this.image);
 
-    function beDraco () {
+            if (chosenCharacter === this) {
+                
+                $("#characterArea").empty();
+                $("#characterArea").append(dracoMalfoy);
+                dracoMalfoy.addClass("dracoMalfoy col-sm-3");
+                $(".dracoMalfoy").append(dracoImage);
+                var dracoPlay = $("<h2>");
+                dracoPlay.addClass("playerStats col-sm-2");
+                dracoPlay.append(this.name + "<br>");
+                dracoPlay.append("HP " + this.healthPower);
+                $("#characterArea").append(dracoPlay);
+            
+            } else if (chosenCharacter === "") {
 
-        var dracoMalfoy = $("<div>");
-        var dracoImage = $("<img>");
-        dracoImage.addClass("dracoImage charImage");
-        dracoImage.attr("src", "./assets/images/draco.png");
-        var dracoStats = $("<p>");
-        dracoStats.addClass("dracoStats");
+                $(".dracoMalfoy").empty();
+                $("#characterArea").append(dracoMalfoy);
+                dracoMalfoy.addClass("dracoMalfoy col-sm-2");
+                $(".dracoMalfoy").append(dracoImage);
+                var dracoStats = $("<p>");
+                $(".dracoMalfoy").prepend(dracoStats);
+                dracoStats.addClass("dracoStats");
+                $(".dracoMalfoy").prepend(dracoStats);
+                $(".dracoStats").before(this.name);
+                $(".dracoStats").append("HP " + this.healthPower);
 
-        if (chosenCharacter === draco || chosenCharacter === "draco") {
-            $("#characterArea").empty();
-            $("#characterArea").append(dracoMalfoy);
-            dracoMalfoy.addClass("dracoMalfoy col-sm-3");
-            $(".dracoMalfoy").append(dracoImage);
-            var dracoPlay = $("<h2>");
-            $("#characterArea").append(dracoPlay);
-            dracoPlay.addClass("playerStats col-sm-2");
-            dracoPlay.append(draco.name + "<br>");
-            dracoPlay.append("HP " + draco.healthPower);
+            } else if (chosenOpponent === this) {
 
-        } else if (chosenCharacter === "") {
-            $(".dracoMalfoy").empty();
-            $("#characterArea").append(dracoMalfoy);
-            dracoMalfoy.addClass("dracoMalfoy col-sm-2");
-            $(".dracoMalfoy").append(dracoImage);
-            $(".dracoMalfoy").prepend(dracoStats);
-            $(".dracoStats").before(draco.name);
-            $(".dracoStats").append("HP " + draco.healthPower);
+                $(".oppStats").empty();
+                $("#activeOppArea").empty();
+                $(".dracoMalfoy").empty();
+                $("#activeOppArea").append(dracoMalfoy);
+                dracoMalfoy.addClass("dracoMalfoy");
+                $(".dracoMalfoy").append(dracoImage);
+                var dracoPlay = $("<h2>");
+                dracoPlay.addClass("oppStats col-sm-4");
+                dracoPlay.append(this.name + "<br>");
+                dracoPlay.append("HP " + this.healthPower);
+                $("#waitingOppArea").prepend(dracoPlay);
 
-        } else if (chosenOpponent === draco) {
-            $("#activeOppArea").empty();
-            $("#waitingOppArea .playerStats").empty();
-            $(".dracoMalfoy").empty();
-            $("#activeOppArea").append(dracoMalfoy);
-            dracoMalfoy.addClass("dracoMalfoy");
-            $(".dracoMalfoy").append(dracoImage);
-            var dracoPlay = $("<h2>");
-            $("#waitingOppArea").prepend(dracoPlay);
-            dracoPlay.addClass("oppStats col-sm-4");
-            dracoPlay.append(draco.name + "<br>");
-            dracoPlay.append("HP " + draco.healthPower);
+            } else if (chosenOpponent !== this && chosenOpponent === "") {
 
-        } else if (chosenOpponent !== draco && chosenOpponent === "") {
-            $("#waitingOppArea").append(dracoMalfoy);
-            dracoMalfoy.addClass("dracoMalfoy col-sm-4");
-            $(".dracoMalfoy").append(dracoImage);
-            $(".dracoMalfoy").prepend(dracoStats);
-            $(".dracoStats").before(draco.name);
-            $(".dracoStats").append("HP " + draco.healthPower);
-        
-        } else {
-            waitingOpps.push(draco.variable);
+                $("#waitingOppArea").append(dracoMalfoy);
+                dracoMalfoy.addClass("dracoMalfoy col-sm-4");
+                $(".dracoMalfoy").append(dracoImage);
+                var dracoStats = $("<p>");
+                dracoStats.addClass("dracoStats");
+                $(".dracoMalfoy").prepend(dracoStats);
+                $(".dracoStats").before(this.name);
+                $(".dracoStats").append("HP " + this.healthPower);
+
+            } else {
+                waitingOpps.push(this.variable);
+            }
         }
-
     }
 
     //  Function for choosing characters at beginning of game
@@ -410,11 +425,10 @@ $(document).ready(function() {
 
     //Function to load characters
     function loadCharacters () {
-
-        beHarry();
-        beHermione();
-        beVoldemort();
-        beDraco();   
+        harry.beHarry();
+        draco.beDraco();
+        hermione.beHermione();
+        voldemort.beVoldemort();
     }
 
 // START GAME FUNCTIONALITY
@@ -431,15 +445,15 @@ $(document).ready(function() {
 
     function runGame() {
 
+        $("#playTheme").on("click", function () {
+            theme.play();
+        });
+
         $("#instructionsPopUp").on("click", function () {
             $("#yourCharacterRow").slideToggle(1000); 
             $("#characterRow").slideToggle(1000); 
             $(instructions).slideToggle(1000);
             $("#footer").slideToggle(1000); 
-        });
-
-        $("#playTheme").on("click", function () {
-            theme.play();
         });
 
         $("#characterRow").show(1200);
@@ -526,24 +540,7 @@ $(document).ready(function() {
             } else {
                 beginFight();
             }
-
         });
     }
-
-    //  when player clicks on attack button, they damage the opponent for the amount specified as "objectname.attackPower"
-    //  player's attack increases by 6 with each regular attack (not on counter attack)
-    
-    //  any time a player attacks an opponent, they automatically counter attack dealing damage to the player
-
-    //  opponent can only counter attack. Each opponent's "counterAttack" stays constant throughout game
-
-    //  if player or opponent health drops to or below zero, that character is defeated
-    //  if player is defeated, game over screen is shown, click game over screen to restart
-
-    //  if opponent is defeated, call the next opponent in the oppononent waiting area and move them into the active opponent position
-
-    //  game repeats until player is defeated or all opponents are defeated
-
-    //  if all opponents are defeated, the player is receives the "elder wand" on the win screen
 
 });
