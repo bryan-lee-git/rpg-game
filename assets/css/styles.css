@@ -1,9 +1,12 @@
 /* Global Styles*/
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:900');
+@import url('https://fonts.googleapis.com/css?family=Oswald:700');
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Quicksand', sans-serif;
     background-image: url(../images/background.png);
     background-size: 220%;
     background-position: center;

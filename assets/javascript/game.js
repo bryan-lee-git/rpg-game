@@ -454,6 +454,8 @@ $(document).ready(function() {
             $("#characterRow").slideToggle(1000); 
             $(instructions).slideToggle(1000);
             $("#footer").slideToggle(1000); 
+            $("#allOppsRow").slideToggle(1000);
+
         });
 
         $("#characterRow").show(1200);
@@ -539,6 +541,7 @@ $(document).ready(function() {
             
             } else {
                 beginFight();
+
             }
         });
     }
