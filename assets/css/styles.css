@@ -51,6 +51,7 @@ h3 {
     position: fixed;
     bottom: 0;
     padding-bottom: 10px;
+    min-height: 50px;
 }
 
 #headerImage img {

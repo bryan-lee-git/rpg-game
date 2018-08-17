@@ -339,12 +339,8 @@ $(document).ready(function() {
                 $(".harryPotter").remove();
                 loadCharacters();
             
-            } else if (fightingCharacters > 2) {
-                harrySound.play();
-                chosenOpponent = harry;
-                $(".harryPotter").remove();
-                loadCharacters();
             }
+
         });
 
         //  HERMIONE OPTIONS
@@ -363,17 +359,12 @@ $(document).ready(function() {
                 chosenOpponent = hermione;
                 $(".hermioneGranger").remove();
                 loadCharacters();
-            
-            } else if (fightingCharacters > 2) {
-                hermioneSound.play();
-                chosenOpponent = hermione;
-                $(".hermioneGranger").remove();
-                loadCharacters();
             }
         });
 
         //  VOLDEMORT OPTIONS
         $(".tomRiddle").on("click", function() {
+
             fightingCharacters++;
 
             if (fightingCharacters === 1) {
@@ -384,12 +375,6 @@ $(document).ready(function() {
                 chooseCharacter();
 
             } else if (fightingCharacters === 2) {
-                voldemortSound.play();
-                chosenOpponent = voldemort;
-                $(".tomRiddle").remove();
-                loadCharacters();
-            
-            } else if (fightingCharacters > 2) {
                 voldemortSound.play();
                 chosenOpponent = voldemort;
                 $(".tomRiddle").remove();
@@ -409,12 +394,6 @@ $(document).ready(function() {
                 chooseCharacter();
 
             } else if (fightingCharacters === 2) {
-                dracoSound.play();
-                chosenOpponent = draco;
-                $(".dracoMalfoy").remove();
-                loadCharacters();
-            
-            } else if (fightingCharacters > 2) {
                 dracoSound.play();
                 chosenOpponent = draco;
                 $(".dracoMalfoy").remove();
@@ -445,8 +424,38 @@ $(document).ready(function() {
 
     function runGame() {
 
+        //  functionality for attack button
+        $("#attackBtn").on("click", function () {
+            
+            attack.play();
+            
+            // if there are less than two players chosen, alert and do not begin fighting.
+            if (fightingCharacters < 2) {
+                alert("You must choose characters before you can attack.");
+            
+            } else {
+                beginFight();
+            }
+        });
+        
+        // Music Button Functionality
+
+        //  hide the pause button
+        $("#stopTheme").hide(200);
+
+        //  add click function for play button
         $("#playTheme").on("click", function () {
             theme.play();
+            $("#playTheme").hide(250);
+            $("#stopTheme").show(500);
+        });
+
+        //  add click function for stop button
+        $("#stopTheme").on("click", function () {
+            theme.pause();
+            $("#stopTheme").hide(250);
+            $("#playTheme").show(500);
+
         });
 
         $("#instructionsPopUp").on("click", function () {
@@ -475,23 +484,38 @@ $(document).ready(function() {
 
             // opponent loses health power equal to the player's damage
             chosenOpponent.healthPower = chosenOpponent.healthPower - chosenCharacter.attackPower;
-        
+            
             // add 6 to player's attach power
             chosenCharacter.attackPower = chosenCharacter.attackPower + 6;
 
-            //refresh opponent stats
+            //  refresh opponent stats
             $("#waitingOppArea .oppStats").empty();
             $("#waitingOppArea .oppStats").append(chosenOpponent.name + "<br>");
             $("#waitingOppArea .oppStats").append("HP " + chosenOpponent.healthPower);
-            
-            chosenCharacter.healthPower = chosenCharacter.healthPower - chosenOpponent.counterAttack;
 
-            //refresh player stats
-            $("#characterArea .playerStats").empty();
-            $("#characterArea .playerStats").append(chosenCharacter.name + "<br>");
-            $("#characterArea .playerStats").append("HP " + chosenCharacter.healthPower);
+            //  if opponents health is greater than 0, they counter your attack
+            if (chosenOpponent.healthPower > 0) {
+                
+                //  opponent counters
+                chosenCharacter.healthPower = chosenCharacter.healthPower - chosenOpponent.counterAttack;
+
+                //  refresh player stats
+                $("#characterArea .playerStats").empty();
+                $("#characterArea .playerStats").append(chosenCharacter.name + "<br>");
+                $("#characterArea .playerStats").append("HP " + chosenCharacter.healthPower);
+
+            } else if (chosenOpponent.healthPower <= 0) {
+
+                fightingCharacters = 1;
+                $("#activeOppArea").empty();
+                $(".oppStats").remove();
+                defeatedOpps++;
+                
+            }
             
+            //  if you lose all of your HP, you die and get served the lose screen
             if (chosenCharacter.healthPower <= 0) {
+
                 gameOverSound.play();
                 //add in game over screen with button to restart
                 $(".container").empty();
@@ -506,14 +530,10 @@ $(document).ready(function() {
                 endScreen.before(restartInstructions);
                 restartInstructions.html("Click center of screen to restart.")
             }
-            
-            if (chosenOpponent.healthPower <= 0) {
-                $("#activeOppArea").empty();
-                $(".oppStats").remove();
-                defeatedOpps++;
-            }
 
+            //  if you defeat all 3 opponents, you win and are served the win screen
             if (defeatedOpps === 3) {
+
                 winSound.play();
                 $(".container").empty();
                 $(".container").removeClass("containerBackground");
@@ -528,22 +548,10 @@ $(document).ready(function() {
                 restartInstructions.html("Click center of screen to restart.")
             }
 
+            // end screen show and add funtionality to click to restart
             $(".endImage").on("click", function () {
                 location.reload();
             });
         }
-
-        $("#attackBtn").on("click", function () {
-            attack.play();
-            
-            if (fightingCharacters < 2) {
-                alert("You must choose characters before you can attack.");
-            
-            } else {
-                beginFight();
-
-            }
-        });
     }
-
 });
