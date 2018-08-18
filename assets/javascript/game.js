@@ -52,6 +52,7 @@ $(document).ready(function() {
                 $("#characterArea").append(harryPotter);
                 harryPotter.addClass("harryPotter col-sm-3");
                 $(".harryPotter").append(harryImage);
+                
                 var harryPlay = $("<h2>");
                 harryPlay.addClass("playerStats col-sm-2");
                 harryPlay.append(this.name + "<br>");
